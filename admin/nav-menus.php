@@ -99,6 +99,7 @@
     </div>
   </div>
 
+  <?php $current_page = 'nav-menus'; ?>
   <?php include 'inc/sidebar.php' ;?>
 
   <script src="/static/assets/vendors/jquery/jquery.js"></script>

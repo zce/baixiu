@@ -92,6 +92,7 @@
     </div>
   </div>
 
+  <?php $current_page = 'slides'; ?>
   <?php include 'inc/sidebar.php' ;?>
 
   <script src="/static/assets/vendors/jquery/jquery.js"></script>
