@@ -8,7 +8,7 @@
 </head>
 <body>
   <div class="login">
-    <form class="login-wrap">
+    <form class="login-wrap" action="/admin/login.php" method="post">
       <img class="avatar" src="/static/assets/img/default.png">
       <!-- 有错误信息时展示 -->
       <!-- <div class="alert alert-danger">
@@ -16,13 +16,13 @@
       </div> -->
       <div class="form-group">
         <label for="email" class="sr-only">邮箱</label>
-        <input id="email" type="email" class="form-control" placeholder="邮箱" autofocus>
+        <input id="email" name="email" type="email" class="form-control" placeholder="邮箱" autofocus>
       </div>
       <div class="form-group">
         <label for="password" class="sr-only">密码</label>
-        <input id="password" type="password" class="form-control" placeholder="密码">
+        <input id="password" name="password" type="password" class="form-control" placeholder="密码">
       </div>
-      <a class="btn btn-primary btn-block" href="index.php">登 录</a>
+      <button class="btn btn-primary btn-block" type="submit">登 录</button>
     </form>
   </div>
 </body>
