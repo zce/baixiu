@@ -25,6 +25,11 @@ if (isset($_GET['s']) && $_GET['s'] != 'all') {
   $where .= sprintf(" and posts.status = '%s'", $_GET['s']);
 }
 
+// 分类筛选
+if (isset($_GET['c']) && $_GET['c'] != 'all') {
+  $where .= sprintf(" and posts.category_id = %d", $_GET['c']);
+}
+
 // 处理分页
 // ========================================
 
@@ -59,7 +64,7 @@ if ($page > $total_pages) {
 // 查询数据
 // ========================================
 
-// 查询全部文章数据
+// 查询文章数据
 $posts = xiu_query(sprintf('select
   posts.id,
   posts.title,
@@ -73,6 +78,9 @@ inner join categories on posts.category_id = categories.id
 where %s
 order by posts.created desc
 limit %d, %d', $where, ($page - 1) * $size, $size));
+
+// 查询全部分类数据
+$categories = xiu_query('select * from categories');
 
 // 数据过滤函数
 // ========================================
@@ -147,9 +155,11 @@ function format_date ($created) {
         <!-- show when multiple checked -->
         <a class="btn btn-danger btn-sm" href="post-delete.php?items=" style="display: none">批量删除</a>
         <form class="form-inline" action="/admin/posts.php">
-          <select name="" class="form-control input-sm">
-            <option value="">所有分类</option>
-            <option value="">未分类</option>
+          <select name="c" class="form-control input-sm">
+            <option value="all">所有分类</option>
+            <?php foreach ($categories as $item) { ?>
+            <option value="<?php echo $item['id']; ?>"<?php echo isset($_GET['c']) && $_GET['c'] == $item['id'] ? ' selected' : ''; ?>><?php echo $item['name']; ?></option>
+            <?php } ?>
           </select>
           <select name="s" class="form-control input-sm">
             <option value="all">所有状态</option>
