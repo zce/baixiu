@@ -1,7 +1,7 @@
 <div class="aside">
   <div class="profile">
-    <img class="avatar" src="/static/uploads/avatar.jpg">
-    <h3 class="name">布头儿</h3>
+    <img class="avatar" src="<?php echo $current_user['avatar']; ?>">
+    <h3 class="name"><?php echo $current_user['nickname']; ?></h3>
   </div>
   <ul class="nav">
     <li<?php echo $current_page == 'dashboard' ? ' class="active"' : ''; ?>>

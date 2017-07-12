@@ -11,15 +11,8 @@ require '../functions.php';
 // 访问控制
 // ========================================
 
-// 启动会话
-session_start();
-
-if (empty($_SESSION['current_logged_in_user_id'])) {
-  // 没有登录标识就代表没有登录
-  // 跳转到登录页
-  header('Location: /admin/login.php');
-  exit; // 结束代码继续执行
-}
+// 获取登录用户信息
+xiu_get_current_user();
 
 // 查询数据
 // ========================================
