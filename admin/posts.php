@@ -14,6 +14,17 @@ require '../functions.php';
 // 获取登录用户信息
 xiu_get_current_user();
 
+// 处理筛选逻辑
+// ========================================
+
+// 数据库查询筛选条件（默认为 1 = 1，相当于没有条件）
+$where = '1 = 1';
+
+// 状态筛选
+if (isset($_GET['s']) && $_GET['s'] != 'all') {
+  $where .= sprintf(" and posts.status = '%s'", $_GET['s']);
+}
+
 // 处理分页
 // ========================================
 
@@ -33,7 +44,8 @@ if ($page <= 0) {
 $total_count = intval(xiu_query('select count(1)
 from posts
 inner join users on posts.user_id = users.id
-inner join categories on posts.category_id = categories.id')[0][0]);
+inner join categories on posts.category_id = categories.id
+where ' . $where)[0][0]);
 
 // 计算总页数
 $total_pages = ceil($total_count / $size);
@@ -58,8 +70,9 @@ $posts = xiu_query(sprintf('select
 from posts
 inner join users on posts.user_id = users.id
 inner join categories on posts.category_id = categories.id
+where %s
 order by posts.created desc
-limit %d, %d', ($page - 1) * $size, $size));
+limit %d, %d', $where, ($page - 1) * $size, $size));
 
 // 数据过滤函数
 // ========================================
@@ -133,15 +146,16 @@ function format_date ($created) {
       <div class="page-action">
         <!-- show when multiple checked -->
         <a class="btn btn-danger btn-sm" href="post-delete.php?items=" style="display: none">批量删除</a>
-        <form class="form-inline">
+        <form class="form-inline" action="/admin/posts.php">
           <select name="" class="form-control input-sm">
             <option value="">所有分类</option>
             <option value="">未分类</option>
           </select>
-          <select name="" class="form-control input-sm">
-            <option value="">所有状态</option>
-            <option value="">草稿</option>
-            <option value="">已发布</option>
+          <select name="s" class="form-control input-sm">
+            <option value="all">所有状态</option>
+            <option value="drafted">草稿</option>
+            <option value="published">已发布</option>
+            <option value="trashed">回收站</option>
           </select>
           <button class="btn btn-default btn-sm">筛选</button>
         </form>
