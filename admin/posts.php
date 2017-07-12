@@ -18,7 +18,10 @@ xiu_get_current_user();
 // ========================================
 
 // 查询全部文章数据
-$posts = xiu_query('select * from posts');
+$posts = xiu_query('select *
+from posts
+inner join users on posts.user_id = users.id
+inner join categories on posts.category_id = categories.id');
 
 // 数据过滤函数
 // ========================================
@@ -55,26 +58,6 @@ function format_date ($created) {
 
   // 格式化并返回 由于 r 是特殊字符，所以需要 \r 转义一下
   return date('Y年m月d日 <b\r> H:i:s', $timestamp);
-}
-
-/**
- * 根据 ID 获取分类信息
- * @param  integer $id 分类 ID
- * @return array       分类信息关联数组
- */
-function get_category ($id) {
-  $sql = sprintf('select * from categories where id = %d', $id);
-  return xiu_query($sql)[0];
-}
-
-/**
- * 根据 ID 获取用户信息
- * @param  integer $id 用户 ID
- * @return array       用户信息关联数组
- */
-function get_author ($id) {
-  $sql = sprintf('select * from users where id = %d', $id);
-  return xiu_query($sql)[0];
 }
 
 ?>
@@ -149,8 +132,8 @@ function get_author ($id) {
           <tr>
             <td class="text-center"><input type="checkbox"></td>
             <td><?php echo $item['title']; ?></td>
-            <td><?php echo get_author($item['user_id'])['nickname']; ?></td>
-            <td><?php echo get_category($item['category_id'])['name']; ?></td>
+            <td><?php echo $item['nickname']; ?></td>
+            <td><?php echo $item['name']; ?></td>
             <td class="text-center"><?php echo format_date($item['created']); ?></td>
             <td class="text-center"><?php echo convert_status($item['status']); ?></td>
             <td class="text-center">
