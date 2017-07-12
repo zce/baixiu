@@ -3,8 +3,11 @@
  * 后台首页
  */
 
+// 启动会话
+session_start();
+
 // 访问控制
-if (empty($_COOKIE['is_logged_in'])) {
+if (empty($_SESSION['is_logged_in'])) {
   // 没有登录标识就代表没有登录
   // 跳转到登录页
   header('Location: /admin/login.php');
