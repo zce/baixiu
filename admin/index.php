@@ -1,3 +1,17 @@
+<?php
+/**
+ * 后台首页
+ */
+
+// 访问控制
+if (empty($_COOKIE['is_logged_in'])) {
+  // 没有登录标识就代表没有登录
+  // 跳转到登录页
+  header('Location: /admin/login.php');
+  exit; // 结束代码继续执行
+}
+
+?>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
