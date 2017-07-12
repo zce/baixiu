@@ -3,16 +3,43 @@
  * 后台首页
  */
 
+// 载入脚本
+// ========================================
+
+require '../config.php';
+
+// 访问控制
+// ========================================
+
 // 启动会话
 session_start();
 
-// 访问控制
 if (empty($_SESSION['is_logged_in'])) {
   // 没有登录标识就代表没有登录
   // 跳转到登录页
   header('Location: /admin/login.php');
   exit; // 结束代码继续执行
 }
+
+// 查询数据
+// ========================================
+
+// 查询文章总数
+
+$connection = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+
+if (!$connection) {
+  die('<h1>Connect Error (' . mysqli_connect_errno() . ') ' . mysqli_connect_error() . '</h1>');
+}
+
+if ($result = mysqli_query($connection, 'select count(1) from posts')) {
+  $post_count = mysqli_fetch_row($result)[0];
+  mysqli_free_result($result);
+}
+
+mysqli_close($connection);
+
+// 其余几个查询只是查询语句不通，所以这里不列举了。
 
 ?>
 <!DOCTYPE html>
@@ -50,7 +77,7 @@ if (empty($_SESSION['is_logged_in'])) {
               <h3 class="panel-title">站点内容统计：</h3>
             </div>
             <ul class="list-group">
-              <li class="list-group-item"><strong>10</strong>篇文章（<strong>2</strong>篇草稿）</li>
+              <li class="list-group-item"><strong><?php echo isset($post_count) ? $post_count : ' 查询失败 '; ?></strong>篇文章（<strong>2</strong>篇草稿）</li>
               <li class="list-group-item"><strong>6</strong>个分类</li>
               <li class="list-group-item"><strong>5</strong>条评论（<strong>1</strong>条待审核）</li>
             </ul>
