@@ -14,6 +14,12 @@ require '../functions.php';
 // 获取登录用户信息
 xiu_get_current_user();
 
+// 查询数据
+// ========================================
+
+// 查询全部文章数据
+$posts = xiu_query('select * from posts');
+
 ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -82,42 +88,20 @@ xiu_get_current_user();
           </tr>
         </thead>
         <tbody>
+          <?php foreach ($posts as $item) { ?>
           <tr>
             <td class="text-center"><input type="checkbox"></td>
-            <td>随便一个名称</td>
-            <td>小小</td>
-            <td>潮科技</td>
-            <td>2016/10/07</td>
-            <td>已发布</td>
+            <td><?php echo $item['title']; ?></td>
+            <td><?php echo $item['user_id']; ?></td>
+            <td><?php echo $item['category_id']; ?></td>
+            <td><?php echo $item['created']; ?></td>
+            <td><?php echo $item['status']; ?></td>
             <td class="text-center">
               <a href="post-add.php" class="btn btn-default btn-xs">编辑</a>
               <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
             </td>
           </tr>
-          <tr>
-            <td class="text-center"><input type="checkbox"></td>
-            <td>随便一个名称</td>
-            <td>小小</td>
-            <td>潮科技</td>
-            <td>2016/10/07</td>
-            <td>已发布</td>
-            <td class="text-center">
-              <a href="post-add.php" class="btn btn-default btn-xs">编辑</a>
-              <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
-            </td>
-          </tr>
-          <tr>
-            <td class="text-center"><input type="checkbox"></td>
-            <td>随便一个名称</td>
-            <td>小小</td>
-            <td>潮科技</td>
-            <td>2016/10/07</td>
-            <td>已发布</td>
-            <td class="text-center">
-              <a href="post-add.php" class="btn btn-default btn-xs">编辑</a>
-              <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
-            </td>
-          </tr>
+          <?php } ?>
         </tbody>
       </table>
     </div>
