@@ -29,6 +29,21 @@ if ($page <= 0) {
   exit;
 }
 
+// 查询总条数
+$total_count = intval(xiu_query('select count(1)
+from posts
+inner join users on posts.user_id = users.id
+inner join categories on posts.category_id = categories.id')[0][0]);
+
+// 计算总页数
+$total_pages = ceil($total_count / $size);
+
+if ($page > $total_pages) {
+  // 超出范围，则跳转到最后一页
+  header('Location: /admin/posts.php?p=' . $total_pages);
+  exit;
+}
+
 // 查询数据
 // ========================================
 
