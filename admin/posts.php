@@ -146,15 +146,7 @@ function format_date ($created) {
           <button class="btn btn-default btn-sm">筛选</button>
         </form>
         <ul class="pagination pagination-sm pull-right">
-          <?php if ($page - 1 > 0) : ?>
-          <li><a href="?p=<?php echo $page - 1; ?>">上一页</a></li>
-          <?php endif; ?>
-          <?php for ($i = 1; $i <= $total_pages; $i++) : ?>
-          <li<?php echo $i === $page ? ' class="active"' : '' ?>><a href="?p=<?php echo $i; ?>"><?php echo $i; ?></a></li>
-          <?php endfor; ?>
-          <?php if ($page + 1 <= $total_pages) : ?>
-          <li><a href="?p=<?php echo $page + 1; ?>">下一页</a></li>
-          <?php endif; ?>
+          <?php xiu_pagination($page, $total_pages, '?p=%d'); ?>
         </ul>
       </div>
       <table class="table table-striped table-bordered table-hover">

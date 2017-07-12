@@ -81,3 +81,29 @@ function xiu_get_current_user () {
 
   return $GLOBALS['current_user'];
 }
+
+/**
+ * 输出分页链接
+ * @param  integer $page   当前页码
+ * @param  integer $total  总页数
+ * @param  string  $format 链接模板，%d 会被替换为具体页数
+ * @example
+ *   <?php xiu_pagination(2, 10, '/list.php?page=%d'); ?>
+ */
+function xiu_pagination ($page, $total, $format) {
+  // 上一页
+  if ($page - 1 > 0) {
+    printf('<li><a href="%s">上一页</a></li>', sprintf($format, $page - 1));
+  }
+
+  // 数字页码
+  for ($i = 1; $i <= $total; $i++) {
+    $activeClass = $i === $page ? ' class="active"' : '';
+    printf('<li%s><a href="%s">%d</a></li>', $activeClass, sprintf($format, $i), $i);
+  }
+
+  // 下一页
+  if ($page + 1 <= $total) {
+    printf('<li><a href="%s">下一页</a></li>', sprintf($format, $page + 1));
+  }
+}
