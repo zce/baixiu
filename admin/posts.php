@@ -20,14 +20,19 @@ xiu_get_current_user();
 // 数据库查询筛选条件（默认为 1 = 1，相当于没有条件）
 $where = '1 = 1';
 
+// 记录本次请求的查询参数
+$query = '';
+
 // 状态筛选
 if (isset($_GET['s']) && $_GET['s'] != 'all') {
   $where .= sprintf(" and posts.status = '%s'", $_GET['s']);
+  $query .= '&s=' . $_GET['s'];
 }
 
 // 分类筛选
 if (isset($_GET['c']) && $_GET['c'] != 'all') {
   $where .= sprintf(" and posts.category_id = %d", $_GET['c']);
+  $query .= '&c=' . $_GET['c'];
 }
 
 // 处理分页
@@ -41,7 +46,7 @@ $page = isset($_GET['p']) && is_numeric($_GET['p']) ? intval($_GET['p']) : 1;
 
 if ($page <= 0) {
   // 页码小于 1 没有任何意义，则跳转到第一页
-  header('Location: /admin/posts.php?p=1');
+  header('Location: /admin/posts.php?p=1' . $query);
   exit;
 }
 
@@ -57,7 +62,7 @@ $total_pages = ceil($total_count / $size);
 
 if ($page > $total_pages) {
   // 超出范围，则跳转到最后一页
-  header('Location: /admin/posts.php?p=' . $total_pages);
+  header('Location: /admin/posts.php?p=' . $total_pages . $query);
   exit;
 }
 
@@ -170,7 +175,7 @@ function format_date ($created) {
           <button class="btn btn-default btn-sm">筛选</button>
         </form>
         <ul class="pagination pagination-sm pull-right">
-          <?php xiu_pagination($page, $total_pages, '?p=%d'); ?>
+          <?php xiu_pagination($page, $total_pages, '?p=%d' . $query); ?>
         </ul>
       </div>
       <table class="table table-striped table-bordered table-hover">
