@@ -51,7 +51,7 @@ xiu_get_current_user();
           <div class="col-sm-6">
             <label class="form-image">
               <input id="avatar" type="file">
-              <img src="/static/assets/img/default.png" alt="">
+              <img src="/static/assets/img/default.png">
               <i class="mask fa fa-upload"></i>
             </label>
           </div>
@@ -94,7 +94,7 @@ xiu_get_current_user();
   </div>
 
   <?php $current_page = 'profile'; ?>
-  <?php include 'inc/sidebar.php' ;?>
+  <?php include 'inc/sidebar.php'; ?>
 
   <script src="/static/assets/vendors/jquery/jquery.js"></script>
   <script src="/static/assets/vendors/bootstrap/js/bootstrap.js"></script>

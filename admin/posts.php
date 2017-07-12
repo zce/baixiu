@@ -150,7 +150,7 @@ function format_date ($created) {
     <div class="container-fluid">
       <div class="page-title">
         <h1>所有文章</h1>
-        <a href="post-add.php" class="btn btn-primary btn-xs">写文章</a>
+        <a href="javascript:;" class="btn btn-primary btn-xs">写文章</a>
       </div>
       <!-- 有错误信息时展示 -->
       <!-- <div class="alert alert-danger">
@@ -158,7 +158,7 @@ function format_date ($created) {
       </div> -->
       <div class="page-action">
         <!-- show when multiple checked -->
-        <a class="btn btn-danger btn-sm" href="post-delete.php?items=" style="display: none">批量删除</a>
+        <a class="btn btn-danger btn-sm" href="javascript:;" style="display: none">批量删除</a>
         <form class="form-inline" action="/admin/posts.php">
           <select name="c" class="form-control input-sm">
             <option value="all">所有分类</option>
@@ -200,7 +200,7 @@ function format_date ($created) {
             <td class="text-center"><?php echo format_date($item['created']); ?></td>
             <td class="text-center"><?php echo convert_status($item['status']); ?></td>
             <td class="text-center">
-              <a href="post-add.php" class="btn btn-default btn-xs">编辑</a>
+              <a href="javascript:;" class="btn btn-default btn-xs">编辑</a>
               <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
             </td>
           </tr>
@@ -211,7 +211,7 @@ function format_date ($created) {
   </div>
 
   <?php $current_page = 'posts'; ?>
-  <?php include 'inc/sidebar.php' ;?>
+  <?php include 'inc/sidebar.php'; ?>
 
   <script src="/static/assets/vendors/jquery/jquery.js"></script>
   <script src="/static/assets/vendors/bootstrap/js/bootstrap.js"></script>

@@ -74,7 +74,7 @@ xiu_get_current_user();
         <div class="col-md-8">
           <div class="page-action">
             <!-- show when multiple checked -->
-            <a class="btn btn-danger btn-sm" href="post-delete.php?items=" style="display: none">批量删除</a>
+            <a class="btn btn-danger btn-sm" href="javascript:;" style="display: none">批量删除</a>
           </div>
           <table class="table table-striped table-bordered table-hover">
             <thead>
@@ -91,37 +91,37 @@ xiu_get_current_user();
             <tbody>
               <tr>
                 <td class="text-center"><input type="checkbox"></td>
-                <td class="text-center"><img class="avatar" src="/static/assets/img/default.png" alt=""></td>
+                <td class="text-center"><img class="avatar" src="/static/assets/img/default.png"></td>
                 <td>i@zce.me</td>
                 <td>zce</td>
                 <td>汪磊</td>
                 <td>激活</td>
                 <td class="text-center">
-                  <a href="post-add.php" class="btn btn-default btn-xs">编辑</a>
+                  <a href="javascript:;" class="btn btn-default btn-xs">编辑</a>
                   <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
                 </td>
               </tr>
               <tr>
                 <td class="text-center"><input type="checkbox"></td>
-                <td class="text-center"><img class="avatar" src="/static/assets/img/default.png" alt=""></td>
+                <td class="text-center"><img class="avatar" src="/static/assets/img/default.png"></td>
                 <td>i@zce.me</td>
                 <td>zce</td>
                 <td>汪磊</td>
                 <td>激活</td>
                 <td class="text-center">
-                  <a href="post-add.php" class="btn btn-default btn-xs">编辑</a>
+                  <a href="javascript:;" class="btn btn-default btn-xs">编辑</a>
                   <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
                 </td>
               </tr>
               <tr>
                 <td class="text-center"><input type="checkbox"></td>
-                <td class="text-center"><img class="avatar" src="/static/assets/img/default.png" alt=""></td>
+                <td class="text-center"><img class="avatar" src="/static/assets/img/default.png"></td>
                 <td>i@zce.me</td>
                 <td>zce</td>
                 <td>汪磊</td>
                 <td>激活</td>
                 <td class="text-center">
-                  <a href="post-add.php" class="btn btn-default btn-xs">编辑</a>
+                  <a href="javascript:;" class="btn btn-default btn-xs">编辑</a>
                   <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
                 </td>
               </tr>
@@ -133,7 +133,7 @@ xiu_get_current_user();
   </div>
 
   <?php $current_page = 'users'; ?>
-  <?php include 'inc/sidebar.php' ;?>
+  <?php include 'inc/sidebar.php'; ?>
 
   <script src="/static/assets/vendors/jquery/jquery.js"></script>
   <script src="/static/assets/vendors/bootstrap/js/bootstrap.js"></script>

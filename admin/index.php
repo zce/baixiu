@@ -60,7 +60,7 @@ $held_count = xiu_query('select count(1) from comments where status = \'held\'')
       <div class="jumbotron text-center">
         <h1>One Belt, One Road</h1>
         <p>Thoughts, stories and ideas.</p>
-        <p><a class="btn btn-primary btn-lg" href="post-add.php" role="button">写文章</a></p>
+        <p><a class="btn btn-primary btn-lg" href="javascript:;" role="button">写文章</a></p>
       </div>
       <div class="row">
         <div class="col-md-4">
@@ -82,7 +82,7 @@ $held_count = xiu_query('select count(1) from comments where status = \'held\'')
   </div>
 
   <?php $current_page = 'dashboard'; ?>
-  <?php include 'inc/sidebar.php' ;?>
+  <?php include 'inc/sidebar.php'; ?>
 
   <script src="/static/assets/vendors/jquery/jquery.js"></script>
   <script src="/static/assets/vendors/bootstrap/js/bootstrap.js"></script>

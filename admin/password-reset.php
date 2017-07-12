@@ -74,7 +74,7 @@ xiu_get_current_user();
   </div>
 
   <?php $current_page = 'password-reset'; ?>
-  <?php include 'inc/sidebar.php' ;?>
+  <?php include 'inc/sidebar.php'; ?>
 
   <script src="/static/assets/vendors/jquery/jquery.js"></script>
   <script src="/static/assets/vendors/bootstrap/js/bootstrap.js"></script>

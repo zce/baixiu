@@ -52,7 +52,7 @@ xiu_get_current_user();
             <input id="site_logo" name="site_logo" type="hidden">
             <label class="form-image">
               <input id="logo" type="file">
-              <img src="/static/assets/img/logo.png" alt="">
+              <img src="/static/assets/img/logo.png">
               <i class="mask fa fa-upload"></i>
             </label>
           </div>
@@ -96,7 +96,7 @@ xiu_get_current_user();
   </div>
 
   <?php $current_page = 'settings'; ?>
-  <?php include 'inc/sidebar.php' ;?>
+  <?php include 'inc/sidebar.php'; ?>
 
   <script src="/static/assets/vendors/jquery/jquery.js"></script>
   <script src="/static/assets/vendors/bootstrap/js/bootstrap.js"></script>

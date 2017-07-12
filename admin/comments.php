@@ -47,7 +47,7 @@ xiu_get_current_user();
       </div> -->
       <div class="page-action">
         <!-- show when multiple checked -->
-        <a class="btn btn-danger btn-sm" href="post-delete.php?items=" style="display: none">批量删除</a>
+        <a class="btn btn-danger btn-sm" href="javascript:;" style="display: none">批量删除</a>
         <ul class="pagination pagination-sm pull-right">
           <li><a href="#">上一页</a></li>
           <li><a href="#">1</a></li>
@@ -77,7 +77,7 @@ xiu_get_current_user();
             <td>2016/10/07</td>
             <td>未批准</td>
             <td class="text-center">
-              <a href="post-add.php" class="btn btn-info btn-xs">批准</a>
+              <a href="javascript:;" class="btn btn-info btn-xs">批准</a>
               <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
             </td>
           </tr>
@@ -89,7 +89,7 @@ xiu_get_current_user();
             <td>2016/10/07</td>
             <td>已批准</td>
             <td class="text-center">
-              <a href="post-add.php" class="btn btn-warning btn-xs">驳回</a>
+              <a href="javascript:;" class="btn btn-warning btn-xs">驳回</a>
               <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
             </td>
           </tr>
@@ -101,7 +101,7 @@ xiu_get_current_user();
             <td>2016/10/07</td>
             <td>已批准</td>
             <td class="text-center">
-              <a href="post-add.php" class="btn btn-warning btn-xs">驳回</a>
+              <a href="javascript:;" class="btn btn-warning btn-xs">驳回</a>
               <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
             </td>
           </tr>
@@ -111,7 +111,7 @@ xiu_get_current_user();
   </div>
 
   <?php $current_page = 'comments'; ?>
-  <?php include 'inc/sidebar.php' ;?>
+  <?php include 'inc/sidebar.php'; ?>
 
   <script src="/static/assets/vendors/jquery/jquery.js"></script>
   <script src="/static/assets/vendors/bootstrap/js/bootstrap.js"></script>
