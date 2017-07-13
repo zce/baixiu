@@ -22,7 +22,6 @@ xiu_get_current_user();
   <title>Add new post &laquo; Admin</title>
   <link rel="stylesheet" href="/static/assets/vendors/bootstrap/css/bootstrap.css">
   <link rel="stylesheet" href="/static/assets/vendors/font-awesome/css/font-awesome.css">
-  <link rel="stylesheet" href="/static/assets/vendors/simplemde/simplemde.min.css">
   <link rel="stylesheet" href="/static/assets/vendors/nprogress/nprogress.css">
   <link rel="stylesheet" href="/static/assets/css/admin.css">
   <script src="/static/assets/vendors/nprogress/nprogress.js"></script>
@@ -46,7 +45,7 @@ xiu_get_current_user();
       <!-- <div class="alert alert-danger">
         <strong>错误！</strong> 发生XXX错误
       </div> -->
-      <form class="row">
+      <form class="row" action="/admin/post-add.php" method="post">
         <div class="col-md-9">
           <div class="form-group">
             <label for="title">标题</label>
@@ -100,16 +99,6 @@ xiu_get_current_user();
 
   <script src="/static/assets/vendors/jquery/jquery.js"></script>
   <script src="/static/assets/vendors/bootstrap/js/bootstrap.js"></script>
-  <script src="/static/assets/vendors/simplemde/simplemde.min.js"></script>
-  <script>
-    new SimpleMDE({
-      element: document.getElementById('content'),
-      // 拼写检查
-      spellChecker: false,
-      // 禁止下载在线 font-awesome
-      autoDownloadFontAwesome: false
-    })
-  </script>
   <script>NProgress.done()</script>
 </body>
 </html>
