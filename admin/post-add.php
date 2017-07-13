@@ -44,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $target_file = '../static/uploads/' . $_FILES['feature']['name'];
       if (move_uploaded_file($temp_file, $target_file)) {
         $image_file = '/static/uploads/' . $_FILES['feature']['name'];
-        var_dump($image_file);
       }
     }
 
@@ -53,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $slug = $_POST['slug'];
     $title = $_POST['title'];
-    $feature = ''; // 图片稍后再考虑
+    $feature = isset($image_file) ? $image_file : '';
     $created = $_POST['created'];
     $content = $_POST['content'];
     $status = $_POST['status'];
@@ -76,15 +75,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $category_id
     );
 
-    // // 执行 SQL 保存数据
-    // if (xiu_execute($sql) > 0) {
-    //   // 保存成功 跳转
-    //   header('Location: /admin/posts.php');
-    //   exit;
-    // } else {
-    //   // 保存失败
-    //   $message = '保存失败，请重试';
-    // }
+    // 执行 SQL 保存数据
+    if (xiu_execute($sql) > 0) {
+      // 保存成功 跳转
+      header('Location: /admin/posts.php');
+      exit;
+    } else {
+      // 保存失败
+      $message = '保存失败，请重试';
+    }
   }
 }
 
