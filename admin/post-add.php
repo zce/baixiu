@@ -73,6 +73,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   }
 }
 
+// 查询数据
+// ========================================
+
+// 查询全部分类数据
+$categories = xiu_query('select * from categories');
+
 ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -131,8 +137,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           <div class="form-group">
             <label for="category">所属分类</label>
             <select id="category" class="form-control" name="category">
-              <option value="1">未分类</option>
-              <option value="2">潮生活</option>
+              <?php foreach ($categories as $item) { ?>
+              <option value="<?php echo $item['id']; ?>"><?php echo $item['name']; ?></option>
+              <?php } ?>
             </select>
           </div>
           <div class="form-group">
