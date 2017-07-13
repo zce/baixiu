@@ -33,6 +33,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // slug 重复
     $message = '别名已经存在，请修改别名';
   } else {
+    // 接收文件并保存
+    // ------------------------------
+
+    // 如果选择了文件 $_FILES['feature']['error'] => 0
+    if (empty($_FILES['feature']['error'])) {
+      // PHP 在会自动接收客户端上传的文件到一个临时的目录
+      $temp_file = $_FILES['feature']['tmp_name'];
+      // 我们只需要把文件保存到我们指定上传目录
+      $target_file = '../static/uploads/' . $_FILES['feature']['name'];
+      if (move_uploaded_file($temp_file, $target_file)) {
+        $image_file = '/static/uploads/' . $_FILES['feature']['name'];
+        var_dump($image_file);
+      }
+    }
+
     // 接收数据
     // ------------------------------
 
@@ -61,15 +76,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $category_id
     );
 
-    // 执行 SQL 保存数据
-    if (xiu_execute($sql) > 0) {
-      // 保存成功 跳转
-      header('Location: /admin/posts.php');
-      exit;
-    } else {
-      // 保存失败
-      $message = '保存失败，请重试';
-    }
+    // // 执行 SQL 保存数据
+    // if (xiu_execute($sql) > 0) {
+    //   // 保存成功 跳转
+    //   header('Location: /admin/posts.php');
+    //   exit;
+    // } else {
+    //   // 保存失败
+    //   $message = '保存失败，请重试';
+    // }
   }
 }
 
@@ -111,7 +126,7 @@ $categories = xiu_query('select * from categories');
         <strong>错误！</strong><?php echo $message; ?>
       </div>
       <?php endif; ?>
-      <form class="row" action="/admin/post-add.php" method="post">
+      <form class="row" action="/admin/post-add.php" method="post" enctype="multipart/form-data">
         <div class="col-md-9">
           <div class="form-group">
             <label for="title">标题</label>
@@ -132,7 +147,7 @@ $categories = xiu_query('select * from categories');
             <label for="feature">特色图像</label>
             <!-- show when image chose -->
             <img class="help-block thumbnail" style="display: none">
-            <input id="feature" class="form-control" name="feature" type="file">
+            <input id="feature" class="form-control" name="feature" type="file" accept="image/*">
           </div>
           <div class="form-group">
             <label for="category">所属分类</label>
