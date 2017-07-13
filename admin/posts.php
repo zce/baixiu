@@ -150,7 +150,7 @@ function format_date ($created) {
     <div class="container-fluid">
       <div class="page-title">
         <h1>所有文章</h1>
-        <a href="javascript:;" class="btn btn-primary btn-xs">写文章</a>
+        <a href="post-add.php" class="btn btn-primary btn-xs">写文章</a>
       </div>
       <!-- 有错误信息时展示 -->
       <!-- <div class="alert alert-danger">
