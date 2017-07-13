@@ -192,6 +192,11 @@ $categories = xiu_query('select * from categories');
         // 将图片元素显示到界面上（预览）
         $(this).siblings('.thumbnail').attr('src', url).fadeIn()
       })
+
+      // slug 预览
+      $('#slug').on('input', function () {
+        $(this).next().children().text($(this).val())
+      })
     })
   </script>
   <script>NProgress.done()</script>
