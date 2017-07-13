@@ -14,6 +14,65 @@ require '../functions.php';
 // 获取登录用户信息
 xiu_get_current_user();
 
+// 处理提交请求
+// ========================================
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  // 数据校验
+  // ------------------------------
+
+  if (empty($_POST['slug'])
+    || empty($_POST['title'])
+    || empty($_POST['created'])
+    || empty($_POST['content'])
+    || empty($_POST['status'])
+    || empty($_POST['category'])) {
+    // 缺少必要数据
+    $message = '请完整填写所有内容';
+  } else if (xiu_query(sprintf("select count(1) from posts where slug = '%s'", $_POST['slug']))[0][0] > 0) {
+    // slug 重复
+    $message = '别名已经存在，请修改别名';
+  } else {
+    // 接收数据
+    // ------------------------------
+
+    $slug = $_POST['slug'];
+    $title = $_POST['title'];
+    $feature = ''; // 图片稍后再考虑
+    $created = $_POST['created'];
+    $content = $_POST['content'];
+    $status = $_POST['status'];
+    $user_id = $current_user['id'];
+    $category_id = $_POST['category'];
+
+    // 保存数据
+    // ------------------------------
+
+    // 拼接查询语句
+    $sql = sprintf(
+      "insert into posts values (null, '%s', '%s', '%s', '%s', '%s', 0, 0, '%s', %d, %d)",
+      $slug,
+      $title,
+      $feature,
+      $created,
+      $content,
+      $status,
+      $user_id,
+      $category_id
+    );
+
+    // 执行 SQL 保存数据
+    if (xiu_execute($sql) > 0) {
+      // 保存成功 跳转
+      header('Location: /admin/posts.php');
+      exit;
+    } else {
+      // 保存失败
+      $message = '保存失败，请重试';
+    }
+  }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -41,10 +100,11 @@ xiu_get_current_user();
       <div class="page-title">
         <h1>写文章</h1>
       </div>
-      <!-- 有错误信息时展示 -->
-      <!-- <div class="alert alert-danger">
-        <strong>错误！</strong> 发生XXX错误
-      </div> -->
+      <?php if (isset($message)) : ?>
+      <div class="alert alert-danger">
+        <strong>错误！</strong><?php echo $message; ?>
+      </div>
+      <?php endif; ?>
       <form class="row" action="/admin/post-add.php" method="post">
         <div class="col-md-9">
           <div class="form-group">
