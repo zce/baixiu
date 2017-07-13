@@ -19,7 +19,7 @@ xiu_get_current_user();
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <title>Dashboard &laquo; Admin</title>
+  <title>Add new post &laquo; Admin</title>
   <link rel="stylesheet" href="/static/assets/vendors/bootstrap/css/bootstrap.css">
   <link rel="stylesheet" href="/static/assets/vendors/font-awesome/css/font-awesome.css">
   <link rel="stylesheet" href="/static/assets/vendors/simplemde/simplemde.min.css">
