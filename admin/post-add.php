@@ -102,6 +102,7 @@ $categories = xiu_query('select * from categories');
   <link rel="stylesheet" href="/static/assets/vendors/bootstrap/css/bootstrap.css">
   <link rel="stylesheet" href="/static/assets/vendors/font-awesome/css/font-awesome.css">
   <link rel="stylesheet" href="/static/assets/vendors/nprogress/nprogress.css">
+  <link rel="stylesheet" href="/static/assets/vendors/simplemde/simplemde.min.css">
   <link rel="stylesheet" href="/static/assets/css/admin.css">
   <script src="/static/assets/vendors/nprogress/nprogress.js"></script>
 </head>
@@ -180,6 +181,7 @@ $categories = xiu_query('select * from categories');
 
   <script src="/static/assets/vendors/jquery/jquery.js"></script>
   <script src="/static/assets/vendors/bootstrap/js/bootstrap.js"></script>
+  <script src="/static/assets/vendors/simplemde/simplemde.min.js"></script>
   <script>
     $(function () {
       // 当文件域文件选择发生改变过后，本地预览选择的图片
@@ -196,6 +198,12 @@ $categories = xiu_query('select * from categories');
       // slug 预览
       $('#slug').on('input', function () {
         $(this).next().children().text($(this).val())
+      })
+
+      // Markdown 编辑器
+      new SimpleMDE({
+        element: $("#content")[0],
+        autoDownloadFontAwesome: false
       })
     })
   </script>
