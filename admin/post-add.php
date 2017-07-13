@@ -180,6 +180,20 @@ $categories = xiu_query('select * from categories');
 
   <script src="/static/assets/vendors/jquery/jquery.js"></script>
   <script src="/static/assets/vendors/bootstrap/js/bootstrap.js"></script>
+  <script>
+    $(function () {
+      // 当文件域文件选择发生改变过后，本地预览选择的图片
+      $('#feature').on('change', function () {
+        var file = $(this).prop('files')[0]
+        // 为这个文件对象创建一个 Object URL
+        var url = URL.createObjectURL(file)
+        // url => blob:http://zce.me/65a03a19-3e3a-446a-9956-e91cb2b76e1f
+        // 不用奇怪 BLOB: binary large object block
+        // 将图片元素显示到界面上（预览）
+        $(this).siblings('.thumbnail').attr('src', url).fadeIn()
+      })
+    })
+  </script>
   <script>NProgress.done()</script>
 </body>
 </html>
