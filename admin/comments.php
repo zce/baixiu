@@ -73,6 +73,7 @@ xiu_get_current_user();
   <script src="/static/assets/vendors/jquery/jquery.js"></script>
   <script src="/static/assets/vendors/bootstrap/js/bootstrap.js"></script>
   <script src="/static/assets/vendors/jsrender/jsrender.js"></script>
+  <script src="/static/assets/vendors/twbs-pagination/jquery.twbsPagination.js"></script>
   <script id="comment_tmpl" type="text/x-jsrender">
     {{if success}}
     {{for data}}
@@ -103,9 +104,12 @@ xiu_get_current_user();
       var $alert = $('.alert')
       var $tbody = $('tbody')
       var $tmpl = $('#comment_tmpl')
+      var $pagination = $('.pagination')
+
+      var size = 30
 
       // 页面加载完成过后，发送异步请求获取评论数据
-      $.get('/admin/comment-list.php', { p: 1, s: 30 }, function (res) {
+      $.get('/admin/comment-list.php', { p: 1, s: size }, function (res) {
         console.log(res)
         // => { success: true, data: [ ... ], total_count: 100 }
 
@@ -114,6 +118,14 @@ xiu_get_current_user();
 
         // 设置到页面中
         $tbody.html(html)
+
+        // 分页组件
+        $pagination.twbsPagination({
+          totalPages: Math.ceil(res.total_count / size),
+          onPageClick: function (event, page) {
+            console.log(page)
+          }
+        })
       })
     })
   </script>
