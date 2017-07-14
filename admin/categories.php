@@ -22,9 +22,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if (empty($_POST['slug']) || empty($_POST['name'])) {
     // 表单不合法，提示错误信息（可以分开判断，提示更加具体的信息）
     $message = '完整填写表单内容';
-  } else {
+  } else if (empty($_POST['id'])) {
     // 表单合法，数据持久化（通俗说法就是保存数据）
+    // 没有提交 ID 代表新增，则新增数据
     $sql = sprintf("insert into categories values (null, '%s', '%s')", $_POST['slug'], $_POST['name']);
+    // 响应结果
+    $message = xiu_execute($sql) > 0 ? '保存成功' : '保存失败';
+  } else {
+    // 提交 ID 就代表是更新，则更新数据
+    $sql = sprintf("update categories set slug = '%s', name = '%s' where id = %d", $_POST['slug'], $_POST['name'], $_POST['id']);
     // 响应结果
     $message = xiu_execute($sql) > 0 ? '保存成功' : '保存失败';
   }
@@ -74,6 +80,7 @@ $categories = xiu_query('select * from categories');
         <div class="col-md-4">
           <form action="/admin/categories.php" method="post">
             <h2>添加新分类目录</h2>
+            <input id="id" name="id" type="hidden">
             <div class="form-group">
               <label for="name">名称</label>
               <input id="name" class="form-control" name="name" type="text" placeholder="分类名称">
@@ -191,10 +198,12 @@ $categories = xiu_query('select * from categories');
         var $tds = $tr.children()
 
         // 拿到当前行数据
+        var id = $tr.data('id')
         var name = $tds.eq(1).text()
         var slug = $tds.eq(2).text()
 
         // 将数据放到表单中
+        $('#id').val(id)
         $('#name').val(name)
         $('#slug').val(slug)
 
