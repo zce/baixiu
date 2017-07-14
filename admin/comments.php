@@ -55,7 +55,7 @@ xiu_get_current_user();
           <tr>
             <th class="text-center" width="40"><input type="checkbox"></th>
             <th>作者</th>
-            <th>评论</th>
+            <th width="500">评论</th>
             <th>评论在</th>
             <th>提交于</th>
             <th>状态</th>
@@ -72,6 +72,39 @@ xiu_get_current_user();
 
   <script src="/static/assets/vendors/jquery/jquery.js"></script>
   <script src="/static/assets/vendors/bootstrap/js/bootstrap.js"></script>
+  <script>
+    $(function () {
+      var $alert = $('.alert')
+      var $tbody = $('tbody')
+
+      // 页面加载完成过后，发送异步请求获取评论数据
+      $.get('/admin/comment-list.php', { p: 1, s: 30 }, function (res) {
+        console.log(res)
+        // => { success: true, data: [ ... ], total_count: 100 }
+        if (!res.success) {
+          // 加载失败 提示消息 并结束运行
+          return $alert.text(res.message)
+        }
+
+        // 将数据渲染到表格中
+        $(res.data).each(function (i, item) {
+          // 每一个数据对应一个 tr
+          $tbody.append('<tr class="' + '' + '">' +
+          '  <td class="text-center"><input type="checkbox"></td>' +
+          '  <td>' + item.author + '</td>' +
+          '  <td>' + item.content + '</td>' +
+          '  <td>《' + item.post_title + '》</td>' +
+          '  <td>' + item.created + '</td>' +
+          '  <td>' + item.status + '</td>' +
+          '  <td class="text-center">' +
+          '    <a href="javascript:;" class="btn btn-info btn-xs">批准</a>' +
+          '    <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>' +
+          '  </td>' +
+          '</tr>')
+        })
+      })
+    })
+  </script>
   <script>NProgress.done()</script>
 </body>
 </html>
