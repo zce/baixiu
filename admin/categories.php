@@ -73,7 +73,7 @@ $categories = xiu_query('select * from categories');
         <div class="col-md-8">
           <div class="page-action">
             <!-- show when multiple checked -->
-            <a class="btn btn-danger btn-sm" href="javascript:;" style="display: none">批量删除</a>
+            <a class="btn btn-danger btn-sm btn-delete" href="/admin/category-delete.php" style="display: none">批量删除</a>
           </div>
           <table class="table table-striped table-bordered table-hover">
             <thead>
@@ -108,6 +108,56 @@ $categories = xiu_query('select * from categories');
 
   <script src="/static/assets/vendors/jquery/jquery.js"></script>
   <script src="/static/assets/vendors/bootstrap/js/bootstrap.js"></script>
+  <script>
+    $(function () {
+      // 获取所需操作的界面元素
+      var $btnDelete = $('.btn-delete')
+      var $thCheckbox = $('th > input[type=checkbox]')
+      var $tdCheckbox = $('td > input[type=checkbox]')
+
+      // 用于记录界面上选中行的数据 ID
+      var checked = []
+
+      /**
+       * 表格中的复选框选中发生改变时控制删除按钮的链接参数和显示状态
+       */
+      $tdCheckbox.on('change', function () {
+        var $this = $(this)
+
+        // 为了可以在这里获取到当前行对应的数据 ID
+        // 在服务端渲染 HTML 时，给每一个 tr 添加 data-id 属性，记录数据 ID
+        // 这里通过 data-id 属性获取到对应的数据 ID
+        var id = parseInt($this.parent().parent().data('id'))
+
+        // ID 如果不合理就忽略
+        if (!id) return
+
+        if ($this.prop('checked')) {
+          // 选中就追加到数组中
+          checked.push(id)
+        } else {
+          // 未选中就从数组中移除
+          checked.splice(checked.indexOf(id), 1)
+        }
+
+        // 有选中就显示操作按钮，没选中就隐藏
+        checked.length ? $btnDelete.fadeIn() : $btnDelete.fadeOut()
+
+        // 批量删除按钮链接参数
+        // search 是 DOM 标准属性，用于设置或获取到的是 a 链接的查询字符串
+        $btnDelete.prop('search', '?id=' + checked.join(','))
+      })
+
+      /**
+       * 全选 / 全不选
+       */
+      $thCheckbox.on('change', function () {
+        var checked = $(this).prop('checked')
+        // 设置每一行的选中状态并触发 上面 👆 的事件
+        $tdCheckbox.prop('checked', checked).trigger('change')
+      })
+    })
+  </script>
   <script>NProgress.done()</script>
 </body>
 </html>
