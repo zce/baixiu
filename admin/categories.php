@@ -65,8 +65,9 @@ $categories = xiu_query('select * from categories');
         <h1>分类目录</h1>
       </div>
       <?php if (isset($message)) : ?>
-      <div class="alert alert-danger">
-        <strong>错误！</strong><?php echo $message; ?>
+      <!-- 重点就是在输出时知道到底是成功还是失败，找规律，或者定义标识变量都可以 -->
+      <div class="alert alert-<?php echo $message == '保存成功' ? 'success' : 'danger'; ?>">
+        <strong><?php echo $message == '保存成功' ? '成功' : '错误'; ?>！</strong><?php echo $message; ?>
       </div>
       <?php endif; ?>
       <div class="row">
