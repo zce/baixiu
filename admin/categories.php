@@ -14,6 +14,22 @@ require '../functions.php';
 // 获取登录用户信息
 xiu_get_current_user();
 
+// 处理表单提交
+// ========================================
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  // 表单校验
+  if (empty($_POST['slug']) || empty($_POST['name'])) {
+    // 表单不合法，提示错误信息（可以分开判断，提示更加具体的信息）
+    $message = '完整填写表单内容';
+  } else {
+    // 表单合法，数据持久化（通俗说法就是保存数据）
+    $sql = sprintf("insert into categories values (null, '%s', '%s')", $_POST['slug'], $_POST['name']);
+    // 响应结果
+    $message = xiu_execute($sql) > 0 ? '保存成功' : '保存失败';
+  }
+}
+
 // 查询数据
 // ========================================
 
@@ -48,13 +64,14 @@ $categories = xiu_query('select * from categories');
       <div class="page-title">
         <h1>分类目录</h1>
       </div>
-      <!-- 有错误信息时展示 -->
-      <!-- <div class="alert alert-danger">
-        <strong>错误！</strong> 发生XXX错误
-      </div> -->
+      <?php if (isset($message)) : ?>
+      <div class="alert alert-danger">
+        <strong>错误！</strong><?php echo $message; ?>
+      </div>
+      <?php endif; ?>
       <div class="row">
         <div class="col-md-4">
-          <form>
+          <form action="/admin/categories.php" method="post">
             <h2>添加新分类目录</h2>
             <div class="form-group">
               <label for="name">名称</label>
