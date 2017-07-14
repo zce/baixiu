@@ -206,7 +206,7 @@ $categories = xiu_query('select * from categories');
         // 将数据放到表单中
         $('#id').val(id)
         $('#name').val(name)
-        $('#slug').val(slug)
+        $('#slug').val(slug).trigger('input')
 
         // 界面显示变化
         $('form > h2').text('编辑分类')
@@ -221,7 +221,7 @@ $categories = xiu_query('select * from categories');
         // 清空表单元素上的数据
         $('#id').val('')
         $('#name').val('')
-        $('#slug').val('')
+        $('#slug').val('').trigger('input')
 
         // 界面显示变化
         $('form > h2').text('添加新分类目录')
