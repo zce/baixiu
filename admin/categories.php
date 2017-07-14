@@ -84,7 +84,7 @@ $categories = xiu_query('select * from categories');
               <p class="help-block">https://zce.me/category/<strong>slug</strong></p>
             </div>
             <div class="form-group">
-              <button class="btn btn-primary" type="submit">添加</button>
+              <button class="btn btn-primary btn-save" type="submit">添加</button>
             </div>
           </form>
         </div>
@@ -109,7 +109,7 @@ $categories = xiu_query('select * from categories');
                 <td><?php echo $item['name']; ?></td>
                 <td><?php echo $item['slug']; ?></td>
                 <td class="text-center">
-                  <a href="javascript:;" class="btn btn-info btn-xs">编辑</a>
+                  <a href="javascript:;" class="btn btn-info btn-xs btn-edit">编辑</a>
                   <a href="/admin/category-delete.php?id=<?php echo $item['id']; ?>" class="btn btn-danger btn-xs">删除</a>
                 </td>
               </tr>
@@ -180,6 +180,27 @@ $categories = xiu_query('select * from categories');
        */
       $('#slug').on('input', function () {
         $(this).next().children().text($(this).val())
+      })
+
+      /**
+       * 编辑分类
+       */
+      $('.btn-edit').on('click', function () {
+        // 变量本地化（效率）
+        var $tr = $(this).parent().parent()
+        var $tds = $tr.children()
+
+        // 拿到当前行数据
+        var name = $tds.eq(1).text()
+        var slug = $tds.eq(2).text()
+
+        // 将数据放到表单中
+        $('#name').val(name)
+        $('#slug').val(slug)
+
+        // 界面显示变化
+        $('form > h2').text('编辑分类')
+        $('form > div > .btn-save').text('保存')
       })
     })
   </script>
