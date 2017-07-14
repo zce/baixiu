@@ -92,6 +92,7 @@ $categories = xiu_query('select * from categories');
             </div>
             <div class="form-group">
               <button class="btn btn-primary btn-save" type="submit">添加</button>
+              <button class="btn btn-default btn-cancel" type="button" style="display: none;">取消</button>
             </div>
           </form>
         </div>
@@ -210,6 +211,22 @@ $categories = xiu_query('select * from categories');
         // 界面显示变化
         $('form > h2').text('编辑分类')
         $('form > div > .btn-save').text('保存')
+        $('form > div > .btn-cancel').show()
+      })
+
+      /**
+       * 取消编辑
+       */
+      $('.btn-cancel').on('click', function () {
+        // 清空表单元素上的数据
+        $('#id').val('')
+        $('#name').val('')
+        $('#slug').val('')
+
+        // 界面显示变化
+        $('form > h2').text('添加新分类目录')
+        $('form > div > .btn-save').text('添加')
+        $('form > div > .btn-cancel').hide()
       })
     })
   </script>
