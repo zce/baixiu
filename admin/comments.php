@@ -121,9 +121,15 @@ xiu_get_current_user();
 
         // 分页组件
         $pagination.twbsPagination({
+          initiateStartPageClick: false, // 否则 onPageClick 第一次就会触发
           totalPages: Math.ceil(res.total_count / size),
-          onPageClick: function (event, page) {
-            console.log(page)
+          onPageClick: function (e, page) {
+            $.get('/admin/comment-list.php', { p: page, s: size }, function (res) {
+              // 通过模板引擎渲染数据
+              var html = $tmpl.render(res)
+              // 设置到页面中
+              $tbody.html(html)
+            })
           }
         })
       })
