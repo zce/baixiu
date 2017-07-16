@@ -136,7 +136,11 @@ xiu_get_current_user();
 
       // 删除评论
       $tbody.on('click', '.btn-delete', function () {
-        console.log('btn delete clicked')
+        var $tr = $(this).parent().parent()
+        var id = parseInt($tr.data('id'))
+        $.get('/admin/comment-delete.php', { id: id }, function (res) {
+          res.success && $tr.remove()
+        })
       })
     })
   </script>
