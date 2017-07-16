@@ -47,7 +47,11 @@ xiu_get_current_user();
       </div> -->
       <div class="page-action">
         <!-- show when multiple checked -->
-        <a class="btn btn-danger btn-sm" href="javascript:;" style="display: none">批量删除</a>
+        <div class="btn-batch" style="display: none">
+          <button class="btn btn-info btn-sm">批量批准</button>
+          <button class="btn btn-warning btn-sm">批量拒绝</button>
+          <button class="btn btn-danger btn-sm">批量删除</button>
+        </div>
         <ul class="pagination pagination-sm pull-right"></ul>
       </div>
       <table class="table table-striped table-bordered table-hover">
@@ -105,7 +109,10 @@ xiu_get_current_user();
       var $tbody = $('tbody')
       var $tmpl = $('#comment_tmpl')
       var $pagination = $('.pagination')
+      var $btnBatch = $('.btn-batch')
 
+      // 选中项集合
+      var checkedItems = []
       // 页大小
       var size = 30
       // 当前页码
@@ -161,6 +168,17 @@ xiu_get_current_user();
         $.post('/admin/comment-status.php?id=' + id, { status: status }, function (res) {
           res.success && loadData()
         })
+      })
+
+      // 批量操作按钮
+      $tbody.on('change', 'td > input[type=checkbox]', function () {
+        var id = parseInt($(this).parent().parent().data('id'))
+        if ($(this).prop('checked')) {
+          checkedItems.push(id)
+        } else {
+          checkedItems.splice(checkedItems.indexOf(id), 1)
+        }
+        checkedItems.length ? $btnBatch.fadeIn() : $btnBatch.fadeOut()
       })
     })
   </script>
