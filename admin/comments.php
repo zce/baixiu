@@ -180,6 +180,12 @@ xiu_get_current_user();
         }
         checkedItems.length ? $btnBatch.fadeIn() : $btnBatch.fadeOut()
       })
+
+      // 全选 / 全不选
+      $('th > input[type=checkbox]').on('change', function () {
+        var checked = $(this).prop('checked')
+        $('td > input[type=checkbox]').prop('checked', checked).trigger('change')
+      })
     })
   </script>
   <script>NProgress.done()</script>
