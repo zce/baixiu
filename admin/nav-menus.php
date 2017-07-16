@@ -41,14 +41,15 @@ xiu_get_current_user();
       <div class="page-title">
         <h1>导航菜单</h1>
       </div>
-      <!-- 有错误信息时展示 -->
-      <!-- <div class="alert alert-danger">
-        <strong>错误！</strong> 发生XXX错误
-      </div> -->
+      <div class="alert alert-danger" style="display: none;"></div>
       <div class="row">
         <div class="col-md-4">
           <form>
             <h2>添加新导航链接</h2>
+            <div class="form-group">
+              <label for="icon">图标 Class</label>
+              <input id="icon" class="form-control" name="icon" type="text" placeholder="图标 Class">
+            </div>
             <div class="form-group">
               <label for="text">文本</label>
               <input id="text" class="form-control" name="text" type="text" placeholder="文本">
@@ -58,11 +59,11 @@ xiu_get_current_user();
               <input id="title" class="form-control" name="title" type="text" placeholder="标题">
             </div>
             <div class="form-group">
-              <label for="href">链接</label>
-              <input id="href" class="form-control" name="href" type="text" placeholder="链接">
+              <label for="link">链接</label>
+              <input id="link" class="form-control" name="link" type="text" placeholder="链接">
             </div>
             <div class="form-group">
-              <button class="btn btn-primary" type="submit">添加</button>
+              <button class="btn btn-primary btn-save" type="submit">添加</button>
             </div>
           </form>
         </div>
@@ -81,35 +82,7 @@ xiu_get_current_user();
                 <th class="text-center" width="100">操作</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td class="text-center"><input type="checkbox"></td>
-                <td><i class="fa fa-glass"></i>奇趣事</td>
-                <td>奇趣事</td>
-                <td>#</td>
-                <td class="text-center">
-                  <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
-                </td>
-              </tr>
-              <tr>
-                <td class="text-center"><input type="checkbox"></td>
-                <td><i class="fa fa-phone"></i>潮科技</td>
-                <td>潮科技</td>
-                <td>#</td>
-                <td class="text-center">
-                  <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
-                </td>
-              </tr>
-              <tr>
-                <td class="text-center"><input type="checkbox"></td>
-                <td><i class="fa fa-fire"></i>会生活</td>
-                <td>会生活</td>
-                <td>#</td>
-                <td class="text-center">
-                  <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
-                </td>
-              </tr>
-            </tbody>
+            <tbody></tbody>
           </table>
         </div>
       </div>
@@ -121,6 +94,60 @@ xiu_get_current_user();
 
   <script src="/static/assets/vendors/jquery/jquery.js"></script>
   <script src="/static/assets/vendors/bootstrap/js/bootstrap.js"></script>
+  <script src="/static/assets/vendors/jsrender/jsrender.js"></script>
+  <script id="menu_tmpl" type="text/x-jsrender">
+    <tr>
+      <td class="text-center"><input type="checkbox"></td>
+      <td><i class="{{: icon }}"></i>{{: text }}</td>
+      <td>{{: title }}</td>
+      <td>{{: link }}</td>
+      <td class="text-center">
+        <button class="btn btn-danger btn-xs btn-delete" data-index="{{: #index }}">删除</button>
+      </td>
+    </tr>
+  </script>
+  <script>
+    $(function () {
+      /**
+       * 显示消息
+       * @param  {String} msg 消息文本
+       */
+      function notify (msg) {
+        $('.alert').text(msg).fadeIn()
+        // 3000 ms 后隐藏
+        setTimeout(function () {
+          $('.alert').fadeOut()
+        }, 3000)
+      }
+
+      /**
+       * 加载导航菜单数据
+       */
+      function loadData () {
+        $.get('/admin/options.php', { key: 'nav_menus' }, function (res) {
+          if (!res.success) {
+            // 失败，提示
+            return notify(res.message)
+          }
+
+          var menus = []
+
+          try {
+            // 尝试以 JSON 方式解析响应内容
+            menus = JSON.parse(res.data)
+          } catch (e) {
+            notify('获取数据失败')
+          }
+
+          // 渲染
+          $('tbody').html($('#menu_tmpl').render(menus))
+        })
+      }
+
+      // 首次加载数据
+      loadData()
+    })
+  </script>
   <script>NProgress.done()</script>
 </body>
 </html>
