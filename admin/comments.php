@@ -86,8 +86,8 @@ xiu_get_current_user();
       <td>{{: status === 'held' ? '待审' : status === 'rejected' ? '拒绝' : '准许' }}</td>
       <td class="text-center">
         {{if status === 'held'}}
-        <a class="btn btn-info btn-xs" href="javascript:;">批准</a>
-        <a class="btn btn-warning btn-xs" href="javascript:;">拒绝</a>
+        <a class="btn btn-info btn-xs btn-edit" href="javascript:;" data-status="approved">批准</a>
+        <a class="btn btn-warning btn-xs btn-edit" href="javascript:;" data-status="rejected">拒绝</a>
         {{/if}}
         <a class="btn btn-danger btn-xs btn-delete" href="javascript:;">删除</a>
       </td>
@@ -150,6 +150,15 @@ xiu_get_current_user();
         var $tr = $(this).parent().parent()
         var id = parseInt($tr.data('id'))
         $.get('/admin/comment-delete.php', { id: id }, function (res) {
+          res.success && loadData()
+        })
+      })
+
+      // 修改评论状态
+      $tbody.on('click', '.btn-edit', function () {
+        var id = parseInt($(this).parent().parent().data('id'))
+        var status = $(this).data('status')
+        $.post('/admin/comment-status.php?id=' + id, { status: status }, function (res) {
           res.success && loadData()
         })
       })
