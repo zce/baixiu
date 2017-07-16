@@ -106,7 +106,22 @@ xiu_get_current_user();
       var $tmpl = $('#comment_tmpl')
       var $pagination = $('.pagination')
 
+      // 页大小
       var size = 30
+      // 当前页码
+      var currentPage = 1
+
+      /**
+       * 加载指定页数据
+       */
+      function loadData () {
+        $.get('/admin/comment-list.php', { p: currentPage, s: size }, function (res) {
+          // 通过模板引擎渲染数据
+          var html = $tmpl.render(res)
+          // 设置到页面中
+          $tbody.html(html)
+        })
+      }
 
       // 页面加载完成过后，发送异步请求获取评论数据
       $.get('/admin/comment-list.php', { p: 1, s: size }, function (res) {
@@ -124,12 +139,8 @@ xiu_get_current_user();
           initiateStartPageClick: false, // 否则 onPageClick 第一次就会触发
           totalPages: Math.ceil(res.total_count / size),
           onPageClick: function (e, page) {
-            $.get('/admin/comment-list.php', { p: page, s: size }, function (res) {
-              // 通过模板引擎渲染数据
-              var html = $tmpl.render(res)
-              // 设置到页面中
-              $tbody.html(html)
-            })
+            currentPage = page
+            loadData()
           }
         })
       })
@@ -139,7 +150,7 @@ xiu_get_current_user();
         var $tr = $(this).parent().parent()
         var id = parseInt($tr.data('id'))
         $.get('/admin/comment-delete.php', { id: id }, function (res) {
-          res.success && $tr.remove()
+          res.success && loadData()
         })
       })
     })
