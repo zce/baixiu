@@ -89,7 +89,7 @@ xiu_get_current_user();
         <a class="btn btn-info btn-xs" href="javascript:;">批准</a>
         <a class="btn btn-warning btn-xs" href="javascript:;">拒绝</a>
         {{/if}}
-        <a class="btn btn-danger btn-xs" href="javascript:;">删除</a>
+        <a class="btn btn-danger btn-xs btn-delete" href="javascript:;">删除</a>
       </td>
     </tr>
     {{/for}}
@@ -132,6 +132,11 @@ xiu_get_current_user();
             })
           }
         })
+      })
+
+      // 删除评论
+      $tbody.on('click', '.btn-delete', function () {
+        console.log('btn delete clicked')
       })
     })
   </script>
