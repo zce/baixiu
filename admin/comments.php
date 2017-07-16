@@ -186,6 +186,27 @@ xiu_get_current_user();
         var checked = $(this).prop('checked')
         $('td > input[type=checkbox]').prop('checked', checked).trigger('change')
       })
+
+      // 批量操作
+      $btnBatch
+        // 批准
+        .on('click', '.btn-info', function (e) {
+          $.post('/admin/comment-status.php?id=' + checkedItems.join(','), { status: 'approved' }, function (res) {
+            res.success && loadData()
+          })
+        })
+        // 拒绝
+        .on('click', '.btn-warning', function (e) {
+          $.post('/admin/comment-status.php?id=' + checkedItems.join(','), { status: 'rejected' }, function (res) {
+            res.success && loadData()
+          })
+        })
+        // 删除
+        .on('click', '.btn-danger', function (e) {
+          $.get('/admin/comment-delete.php', { id: checkedItems.join(',') }, function (res) {
+            res.success && loadData()
+          })
+        })
     })
   </script>
   <script>NProgress.done()</script>
