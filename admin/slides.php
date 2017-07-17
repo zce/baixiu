@@ -47,10 +47,11 @@ xiu_get_current_user();
           <form>
             <h2>添加新轮播内容</h2>
             <div class="form-group">
-              <label for="image">图片</label>
+              <label for="upload">图片</label>
               <!-- show when image chose -->
               <img class="help-block thumbnail" style="display: none">
-              <input id="image" class="form-control" name="image" type="file">
+              <input id="image" name="image" type="hidden">
+              <input id="upload" class="form-control" name="upload" type="file">
             </div>
             <div class="form-group">
               <label for="text">文本</label>
@@ -227,6 +228,24 @@ xiu_get_current_user();
             })
           })
         })
+      })
+
+      /**
+       * 异步上传文件
+       */
+      $('#upload').on('change', function () {
+        // 准备要上传的数据
+        var formData = new FormData()
+        formData.append('file', this.files[0])
+
+        // 发送 AJAX 请求，上传文件
+        var xhr = new XMLHttpRequest()
+        xhr.open('POST', '/admin/upload.php')
+        xhr.addEventListener('load', function () {
+          var res = JSON.parse(xhr.response)
+          console.log(res)
+        })
+        xhr.send(formData)
       })
 
       // 首次加载数据
