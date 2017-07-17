@@ -96,13 +96,13 @@ xiu_get_current_user();
   <script src="/static/assets/vendors/bootstrap/js/bootstrap.js"></script>
   <script src="/static/assets/vendors/jsrender/jsrender.js"></script>
   <script id="menu_tmpl" type="text/x-jsrender">
-    <tr>
+    <tr data-index="{{: #index }}">
       <td class="text-center"><input type="checkbox"></td>
       <td><i class="{{: icon }}"></i>{{: text }}</td>
       <td>{{: title }}</td>
       <td>{{: link }}</td>
       <td class="text-center">
-        <button class="btn btn-danger btn-xs btn-delete" data-index="{{: #index }}">删除</button>
+        <a class="btn btn-danger btn-xs btn-delete" href="javascript:;">删除</a>
       </td>
     </tr>
   </script>
@@ -205,6 +205,30 @@ xiu_get_current_user();
 
         // 阻止默认事件
         return false
+      })
+
+      /**
+       * 删除指定数据
+       */
+      $('tbody').on('click', '.btn-delete', function () {
+        var index = parseInt($(this).parent().parent().data('index'))
+
+        // 获取当前的菜单数据
+        loadData(function (err, data) {
+          if (err) return notify(err.message)
+
+          data.splice(index, 1)
+
+          // 保存数据到服务端
+          saveData(data, function (err) {
+            if (err) return notify(err.message)
+            // 再次加载
+            loadData(function (err, data) {
+              if (err) return notify(err.message)
+              $('tbody').html($('#menu_tmpl').render(data))
+            })
+          })
+        })
       })
 
       // 首次加载数据
