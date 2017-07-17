@@ -144,6 +144,69 @@ xiu_get_current_user();
         })
       }
 
+      /**
+       * 保存导航菜单数据
+       * @param  {Array}   data      需要保存的数据
+       * @param  {Function} callback 保存后需要执行的逻辑
+       */
+      function saveData (data, callback) {
+        $.post('/admin/options.php', { key: 'nav_menus', value: JSON.stringify(data) }, function (res) {
+          if (!res.success) {
+            return callback(new Error(res.message))
+          }
+
+          // 成功
+          callback(null)
+        })
+      }
+
+      /**
+       * 新增逻辑
+       */
+      $('.btn-save').on('click', function () {
+        var menu = {
+          icon: $('#icon').val(),
+          text: $('#text').val(),
+          title: $('#title').val(),
+          link: $('#link').val()
+        }
+
+        // 数据校验
+        for (var key in menu) {
+          if (menu[key]) continue
+          notify('完整填写表单')
+          return false
+        }
+
+        // 获取当前的菜单数据
+        loadData(function (err, data) {
+          if (err) return notify(err.message)
+
+          // 将界面上的数据追加到已有数据中
+          data.push(menu)
+
+          // 保存数据到服务端
+          saveData(data, function (err) {
+            if (err) return notify(err.message)
+            // 再次加载
+            loadData(function (err, data) {
+              if (err) return notify(err.message)
+              // 使用 jsrender 渲染数据到表格
+              $('tbody').html($('#menu_tmpl').render(data))
+
+              // 清空表单
+              $('#icon').val('')
+              $('#text').val('')
+              $('#title').val('')
+              $('#link').val('')
+            })
+          })
+        })
+
+        // 阻止默认事件
+        return false
+      })
+
       // 首次加载数据
       loadData(function (err, data) {
         if (err) return notify(err.message)
