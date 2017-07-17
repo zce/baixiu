@@ -41,10 +41,7 @@ xiu_get_current_user();
       <div class="page-title">
         <h1>图片轮播</h1>
       </div>
-      <!-- 有错误信息时展示 -->
-      <!-- <div class="alert alert-danger">
-        <strong>错误！</strong> 发生XXX错误
-      </div> -->
+      <div class="alert alert-danger" style="display: none;"></div>
       <div class="row">
         <div class="col-md-4">
           <form>
@@ -56,15 +53,15 @@ xiu_get_current_user();
               <input id="image" class="form-control" name="image" type="file">
             </div>
             <div class="form-group">
-              <label for="title">标题</label>
-              <input id="title" class="form-control" name="title" type="text" placeholder="标题">
+              <label for="text">文本</label>
+              <input id="text" class="form-control" name="text" type="text" placeholder="文本">
             </div>
             <div class="form-group">
               <label for="link">链接</label>
               <input id="link" class="form-control" name="link" type="text" placeholder="链接">
             </div>
             <div class="form-group">
-              <button class="btn btn-primary" type="submit">添加</button>
+              <button class="btn btn-primary btn-save" type="submit">添加</button>
             </div>
           </form>
         </div>
@@ -78,31 +75,12 @@ xiu_get_current_user();
               <tr>
                 <th class="text-center" width="40"><input type="checkbox"></th>
                 <th class="text-center">图片</th>
-                <th>标题</th>
+                <th>文本</th>
                 <th>链接</th>
                 <th class="text-center" width="100">操作</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td class="text-center"><input type="checkbox"></td>
-                <td class="text-center"><img class="slide" src="/static/uploads/slide_1.jpg"></td>
-                <td>XIU功能演示</td>
-                <td>#</td>
-                <td class="text-center">
-                  <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
-                </td>
-              </tr>
-              <tr>
-                <td class="text-center"><input type="checkbox"></td>
-                <td class="text-center"><img class="slide" src="/static/uploads/slide_2.jpg"></td>
-                <td>XIU功能演示</td>
-                <td>#</td>
-                <td class="text-center">
-                  <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
-                </td>
-              </tr>
-            </tbody>
+            <tbody></tbody>
           </table>
         </div>
       </div>
@@ -114,6 +92,151 @@ xiu_get_current_user();
 
   <script src="/static/assets/vendors/jquery/jquery.js"></script>
   <script src="/static/assets/vendors/bootstrap/js/bootstrap.js"></script>
+  <script src="/static/assets/vendors/jsrender/jsrender.js"></script>
+  <script id="slide_tmpl" type="text/x-jsrender">
+    <tr data-index="{{: #index }}">
+      <td class="text-center"><input type="checkbox"></td>
+      <td class="text-center"><img class="slide" src="{{: image }}"></td>
+      <td>{{: text }}</td>
+      <td>{{: link }}</td>
+      <td class="text-center">
+        <a href="javascript:;" class="btn btn-danger btn-xs btn-delete">删除</a>
+      </td>
+    </tr>
+  </script>
+  <script>
+    $(function () {
+      /**
+       * 显示消息
+       * @param  {String} msg 消息文本
+       */
+      function notify (msg) {
+        $('.alert').text(msg).fadeIn()
+        // 3000 ms 后隐藏
+        setTimeout(function () {
+          $('.alert').fadeOut()
+        }, 3000)
+      }
+
+      /**
+       * 加载导航菜单数据
+       * @param {Function} callback 获取到数据后续的逻辑
+       */
+      function loadData (callback) {
+        $.get('/admin/options.php', { key: 'home_slides' }, function (res) {
+          if (!res.success) {
+            // 失败，提示
+            return callback(new Error(res.message))
+          }
+
+          var slides = []
+
+          try {
+            // 防止 JSON 中出现 “\”
+            res.data = res.data.replace(/\\/g, '\\\\')
+            // 尝试以 JSON 方式解析响应内容
+            slides = JSON.parse(res.data)
+          } catch (e) {
+            callback(new Error('获取数据失败'))
+          }
+
+          callback(null, slides)
+        })
+      }
+
+      /**
+       * 保存导航菜单数据
+       * @param  {Array}   data      需要保存的数据
+       * @param  {Function} callback 保存后需要执行的逻辑
+       */
+      function saveData (data, callback) {
+        $.post('/admin/options.php', { key: 'home_slides', value: JSON.stringify(data) }, function (res) {
+          if (!res.success) {
+            return callback(new Error(res.message))
+          }
+
+          // 成功
+          callback(null)
+        })
+      }
+
+      /**
+       * 新增逻辑
+       */
+      $('.btn-save').on('click', function () {
+        var slide = {
+          image: $('#image').val(),
+          text: $('#text').val(),
+          link: $('#link').val()
+        }
+
+        // 数据校验
+        for (var key in slide) {
+          if (slide[key]) continue
+          notify('完整填写表单')
+          return false
+        }
+
+        // 获取当前的菜单数据
+        loadData(function (err, data) {
+          if (err) return notify(err.message)
+
+          // 将界面上的数据追加到已有数据中
+          data.push(slide)
+
+          // 保存数据到服务端
+          saveData(data, function (err) {
+            if (err) return notify(err.message)
+            // 再次加载
+            loadData(function (err, data) {
+              if (err) return notify(err.message)
+              // 使用 jsrender 渲染数据到表格
+              $('tbody').html($('#slide_tmpl').render(data))
+
+              // 清空表单
+              $('#image').val('')
+              $('#text').val('')
+              $('#link').val('')
+            })
+          })
+        })
+
+        // 阻止默认事件
+        return false
+      })
+
+      /**
+       * 删除指定数据
+       */
+      $('tbody').on('click', '.btn-delete', function () {
+        var index = parseInt($(this).parent().parent().data('index'))
+
+        // 获取当前的菜单数据
+        loadData(function (err, data) {
+          if (err) return notify(err.message)
+
+          data.splice(index, 1)
+
+          // 保存数据到服务端
+          saveData(data, function (err) {
+            if (err) return notify(err.message)
+            // 再次加载
+            loadData(function (err, data) {
+              if (err) return notify(err.message)
+              $('tbody').html($('#slide_tmpl').render(data))
+            })
+          })
+        })
+      })
+
+      // 首次加载数据
+      loadData(function (err, data) {
+        if (err) return notify(err.message)
+        // 使用 jsrender 渲染数据到表格
+        $('tbody').html($('#slide_tmpl').render(data))
+      })
+    })
+  </script>
   <script>NProgress.done()</script>
 </body>
 </html>
