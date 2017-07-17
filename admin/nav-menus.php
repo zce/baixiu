@@ -122,12 +122,13 @@ xiu_get_current_user();
 
       /**
        * 加载导航菜单数据
+       * @param {Function} callback 获取到数据后续的逻辑
        */
-      function loadData () {
+      function loadData (callback) {
         $.get('/admin/options.php', { key: 'nav_menus' }, function (res) {
           if (!res.success) {
             // 失败，提示
-            return notify(res.message)
+            return callback(new Error(res.message))
           }
 
           var menus = []
@@ -136,16 +137,19 @@ xiu_get_current_user();
             // 尝试以 JSON 方式解析响应内容
             menus = JSON.parse(res.data)
           } catch (e) {
-            notify('获取数据失败')
+            callback(new Error('获取数据失败'))
           }
 
-          // 渲染
-          $('tbody').html($('#menu_tmpl').render(menus))
+          callback(null, menus)
         })
       }
 
       // 首次加载数据
-      loadData()
+      loadData(function (err, data) {
+        if (err) return notify(err.message)
+        // 使用 jsrender 渲染数据到表格
+        $('tbody').html($('#menu_tmpl').render(data))
+      })
     })
   </script>
   <script>NProgress.done()</script>
