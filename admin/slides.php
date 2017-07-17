@@ -239,13 +239,22 @@ xiu_get_current_user();
         formData.append('file', this.files[0])
 
         // 发送 AJAX 请求，上传文件
-        var xhr = new XMLHttpRequest()
-        xhr.open('POST', '/admin/upload.php')
-        xhr.addEventListener('load', function () {
-          var res = JSON.parse(xhr.response)
-          console.log(res)
+        $.ajax({
+          url: '/admin/upload.php',
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: formData,
+          type: 'post',
+          success: function (res) {
+            if (res.success) {
+              $('#image').val(res.data).siblings('.thumbnail').attr('src', res.data).fadeIn()
+            } else {
+              $('#image').val('').siblings('.thumbnail').fadeOut()
+              notify('上传文件失败')
+            }
+          }
         })
-        xhr.send(formData)
       })
 
       // 首次加载数据
